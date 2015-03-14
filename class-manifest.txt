@@ -1,0 +1,13 @@
+Class manifest
+
+Film/Video (formely called episode):
+Stores local information about an episode (such as name). Also stores information about different qualities and infohashes (or regular hashes) of each file. Includes a resolution algorithm to use when a user requests a quality that is not available for this film. The name "film" or "video" is used since this class can also potentially handle full films (e.g. from YTS). Knows nothing about the series the episode belongs too.
+
+Show:
+Stores information about a show (name, number of episodes, etc). Provides facilities for searching, sorting and listing of episodes (MAY have a local copy of episode names and other data, but "film" class has precedence). Also has information on the show as a whole.
+
+Index:
+Represents the eztvapi index. Has facilities for searching and getting shows. Once a user selects a show, he gets a show object and stays on the side. This is where caching facilities are to be hooked.
+
+
+
