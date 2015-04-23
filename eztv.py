@@ -3,6 +3,8 @@ import copy
 import magnet
 import videocollection
 import threading
+import weakref
+import time
 
 class index():
 	def __init__(self,url = 'http://eztvapi.re/',retry=True):
@@ -15,23 +17,28 @@ class index():
 
 
 	def set_auto_retry(self,retry):
-		#DOES NOT WORK. 
-		#Object will permanently remain in scope if auto retry is active and all references are lost.
-		#Timer will hold a reference of its own and will run forever, causing a memory (and thread) leak.
+		#Works!
+
 		if retry == True:
 			if self.page_maintenance == None:
-				self.page_maintenance = threading.Timer(15,self.__auto_retry_pages)
+				self.page_maintenance = threading.Thread(target=index.__auto_retry_pages,args=(weakref.proxy(self), ))
 				self.page_maintenance.daemon = True
 				self.page_maintenance.start()
 		else:
 			if self.page_maintenance != None:
-				self.page_maintenance.cancel()
 				self.page_maintenance = None
 
 	def __auto_retry_pages(self):
-		self.get_missing_pages()
-		self.page_maintenance = threading.Timer(60,self.__auto_retry_pages)
-		self.page_maintenance.start()
+		try:
+			while self.page_maintenance != None:
+				time.sleep(3600)
+				if self.page_maintenance != None:	#Always check if we're doing auto retry. It may have changed during the long sleep
+					self.get_missing_pages()
+
+		except ReferenceError:
+			return
+		return
+
 
 	def get_all_show_pages(self):	
 		pages = requests.get(self.base_url + 'shows',proxies={'http': 'http://127.0.0.1:8080'})
