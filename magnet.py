@@ -90,7 +90,7 @@ def synth_magnet(hash):
 
 	hex_hash = hash.encode('hex')
 
-	link = 'magnet?xt=urn:btih:' + hex_hash 
+	link = 'magnet:?xt=urn:btih:' + hex_hash 
 
 	return link
 	

@@ -95,6 +95,12 @@ class show():
 	def get_season_list(self):
 		return [i for i in self.seasons]
 
+	def get_episode(self,season,episode):
+		return self.seasons[season][episode]
+
+	def get_season(self,season):
+		return [self.seasons[season][i] for i in self.seasons[season]]
+
 	def search_episodes(self,terms=None):
 		retval = []
 		for i in self.get_season_list():
@@ -128,7 +134,6 @@ class video():
 
 	def add_torrent(self,quality,btih):
 		self.torrents[quality] = magnet.get_binary_infohash(btih)
-
 
 
 	def list_magnets(self):
