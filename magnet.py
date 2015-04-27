@@ -66,7 +66,7 @@ def __convert_hash_to_raw(hash):
 	elif is_base32_infohash(hash):
 		return base64.b32decode(hash)
 	else:
-		raise NotBTIHError()
+		raise NotBTIHError(hash)
 
 def get_binary_infohash(url):
 	if is_magnet(url):
@@ -74,16 +74,16 @@ def get_binary_infohash(url):
 	elif is_infohash(url):
 		hash = url
 	else:
-		raise NotMagnetLinkError()
+		raise NotMagnetLinkError(url)
 
 	if is_infohash(hash):
 		return __convert_hash_to_raw(hash) 
 	else:
-		raise NotBTIHError()
+		raise NotBTIHError(hash)
 
 def synth_magnet(hash):
 	if not is_magnet(hash) and not is_infohash(hash):
-		raise NotBTIHError()
+		raise NotBTIHError(hash)
 	
 	if not is_binary_infohash(hash):
 		hash = get_binary_infohash(hash)

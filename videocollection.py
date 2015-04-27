@@ -133,8 +133,10 @@ class video():
 
 
 	def add_torrent(self,quality,btih):
-		self.torrents[quality] = magnet.get_binary_infohash(btih)
-
+		try:
+			self.torrents[quality] = magnet.get_binary_infohash(btih)
+		except:
+			return
 
 	def list_magnets(self):
 		listing = {}
